@@ -1,6 +1,7 @@
 /*
 mmaplib.h
 
+Copyright (c) 2017 Yehonatan Ballas
 Copyright (c) 2016-2017 Yuji Hirose
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -35,7 +36,15 @@ SOFTWARE.
 #endif
 #include <stdexcept>
 
-namespace mmaplib {
+namespace mmaplib
+{
+struct membuf : std::streambuf
+{
+	membuf(char* begin, char* end) {
+		this->setg(begin, begin, end);
+	}
+};
+
 
 class MemoryMappedFile
 {
@@ -46,6 +55,11 @@ public:
     bool is_open() const;
     size_t size() const;
     const char* data() const;
+
+	// return buffer derived from std::streambuf
+	const auto buffer() const {
+		return membuf(const_cast<char*>(data()), const_cast<char*>(data() + size()));
+	}
 
 private:
     void cleanup();
