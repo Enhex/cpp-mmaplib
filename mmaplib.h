@@ -35,6 +35,7 @@ SOFTWARE.
 #include <sys/stat.h>
 #endif
 #include <stdexcept>
+#include <streambuf>
 
 namespace mmaplib
 {
